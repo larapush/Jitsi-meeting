@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LaraPush Demo Meeting</title>
+    <script>
+        function getMeetingName() {
+            const currentURL = new URL(window.location.href);
+            const pathname = currentURL.pathname.substring(1);
+
+            if (pathname === '') {
+                document.title = 'LaraPushDemoMeeting';
+                return 'LarapushDemoMeeting';
+            } else {
+                const meetingName = 'LaraPush' + pathname.charAt(0).toUpperCase() + pathname.slice(1);
+                document.title = meetingName;
+                return meetingName;
+            }
+        }
+    </script>
     <style>
         body, html {
             margin: 0;
@@ -22,6 +36,11 @@
     </style>
 </head>
 <body>
-    <iframe src="https://meet.jit.si/LaraPushDemoMeeting" allow="camera; microphone; fullscreen;"></iframe>
+    <iframe id="meeting-iframe" allow="camera; microphone; fullscreen; display-capture; autoplay;"></iframe>
+    <script>
+        const anonymousHash = 'klsdahjdaoisdhasduihadishaduadhaldsa';
+        const meetingName = getMeetingName();
+        document.getElementById('meeting-iframe').src = 'https://meet.jit.si/' + anonymousHash + '/' + meetingName;
+    </script>
 </body>
 </html>
