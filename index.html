@@ -2,22 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        function getMeetingName() {
-            const currentURL = new URL(window.location.href);
-            const pathname = currentURL.pathname.substring(1);
-
-            if (pathname === '') {
-                document.title = 'LaraPushDemoMeeting';
-                return 'LarapushDemoMeeting';
-            } else {
-                const meetingName = 'LaraPush' + pathname.charAt(0).toUpperCase() + pathname.slice(1);
-                document.title = meetingName;
-                return meetingName;
-            }
-        }
-    </script>
+    <title>Document</title>
     <style>
         body, html {
             margin: 0;
@@ -34,13 +21,69 @@
             border: none;
         }
     </style>
+    <script>
+        function getMeetingName() {
+            const currentURL = new URL(window.location.href);
+            const searchParams = currentURL.searchParams;
+            let meetingNameParam = null;
+            let meetingNameFinal = ""
+
+            for (const [key, value] of searchParams.entries()) {
+                if (key !== '' && value === '') {
+                    meetingNameParam = key;
+                    break;
+                }
+            }
+
+            if (meetingNameParam === null) {
+                document.title = 'LaraPushDemoMeeting';
+                meetingNameFinal = 'LaraPushDemoMeeting';
+            } else {
+                const meetingName = 'LaraPush' + meetingNameParam.charAt(0).toUpperCase() + meetingNameParam.slice(1);
+                document.title = meetingName;
+                meetingNameFinal = meetingName;
+            }
+
+            return 'klsdahjdaoisdhasduihadishaduadhaldsa/'+meetingNameFinal
+        }
+    </script>
 </head>
 <body>
-    <iframe id="meeting-iframe" allow="camera; microphone; fullscreen; display-capture; autoplay;"></iframe>
+    <div id="meet">
+
+    </div>
+    <script src="https://meet.jit.si/external_api.js"></script>
     <script>
-        const anonymousHash = 'klsdahjdaoisdhasduihadishaduadhaldsa';
+        const domain = 'meet.jit.si';
         const meetingName = getMeetingName();
-        document.getElementById('meeting-iframe').src = 'https://meet.jit.si/' + anonymousHash + '/' + meetingName;
+        const options = {
+            roomName: meetingName,
+            parentNode: document.querySelector('#meet'),
+            interfaceConfigOverwrite: {
+                DEFAULT_LOGO_URL: 'https://cdn.larapush.com/uploads/larapush-logo.svg',
+                SHOW_JITSI_WATERMARK: false,
+                HIDE_INVITE_MORE_HEADER: true,
+                HIDE_DEEP_LINKING_LOGO: true,
+                DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
+                DISABLE_FOCUS_INDICATOR: true,
+                DEFAULT_WELCOME_PAGE_LOGO_URL: 'https://cdn.larapush.com/uploads/larapush-logo.svg',
+                SHOW_JITSI_WATERMARK: true,
+                TOOLBAR_BUTTONS: [
+                    'microphone',
+                    'desktop',
+                    'chat',
+                    'recording',
+                ],
+                SHOW_CHROME_EXTENSION_BANNER: false,
+                DEFAULT_LOGO_URL: 'https://cdn.larapush.com/uploads/larapush-logo.svg',
+                SHOW_JITSI_WATERMARK: false
+            },
+            configOverwrite: {
+                disableDeepLinking: true,
+                startAudioOnly: true
+            }
+        };
+        const api = new JitsiMeetExternalAPI(domain, options);
     </script>
 </body>
 </html>
