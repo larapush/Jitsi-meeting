@@ -36,11 +36,9 @@
             }
 
             if (meetingNameParam === null) {
-                document.title = 'LaraPushDemoMeeting';
                 meetingNameFinal = 'LaraPushDemoMeeting';
             } else {
                 const meetingName = 'LaraPush' + meetingNameParam.charAt(0).toUpperCase() + meetingNameParam.slice(1);
-                document.title = meetingName;
                 meetingNameFinal = meetingName;
             }
 
